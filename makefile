@@ -3,8 +3,8 @@ proc=1
 all: make
 
 make:
-	mkdir out
-	gcc source/client.c -o out/client.out
-	gcc source/server.c -Dproc=$(proc) -o out/server.out
+	mkdir -p out
+	gcc src/client.c -o out/client.out
+	gcc src/server.c -pthread -Dproc=$(proc) -o out/server.out
 clean:
 	rm -rf out
