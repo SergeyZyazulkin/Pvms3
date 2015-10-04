@@ -1,4 +1,4 @@
-proc=1
+proc=0
 
 all: make
 
