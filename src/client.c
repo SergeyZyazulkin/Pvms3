@@ -2,8 +2,8 @@
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <string.h>
-
-int main(int argc, char **argv) 
+    
+int main(int argc, char **argv)
 {
     int sock, bytes_count;
     struct sockaddr_in server;
@@ -14,7 +14,7 @@ int main(int argc, char **argv)
         puts("Invalid count of parameters");
         return -1;
     }
-     
+
     //Create socket
     sock = socket(AF_INET , SOCK_STREAM , 0);
 
@@ -23,37 +23,35 @@ int main(int argc, char **argv)
     }
 
     puts("Socket created");
-     
     server.sin_addr.s_addr = inet_addr(argv[1]);
     server.sin_family = AF_INET;
     server.sin_port = htons(8042);
- 
+
     //Connect to remote server
     if (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0) {
         puts("Error: connect failed");
         return -1;
     }
-     
+
     puts("Connected");
-     
+    
     //Communicate with server
     if (send(sock, argv[2], sizeof(argv[2]) / sizeof(argv[2][0]), 0) < 0) {
         puts("Error: send failed");
     } else {
         out = fopen("Output", "wb");
-
+        
         if (out == NULL) {
             puts("Error: could not create output file");
         } else {
-            while (bytes_count = recv(sock, buf, 1024, 0) > 0) {
-                printf("%s\n%d\n", buf, bytes_count);
+            while ((bytes_count = recv(sock, buf, 1024, 0)) > 0) {
                 fwrite(buf, 1, bytes_count, out);
             }
 
-            fclose(out);    
+            fclose(out);
         }
     }
-     
+
     puts("Disconnected");
     close(sock);
     return 0;

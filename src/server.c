@@ -19,14 +19,12 @@ void* handle_client(void* arg)
 
     file = fopen(buf, "rb");
 
-    if (file == NULL) {
+    if (file == 0) {
         buf[0] = '\0';
         puts("Error: could not open input file");
         send(socket, buf, 0, 0);
     } else {
-        while (bytes_read = fread(buf, 1, 1024, file) > 0) {
-            printf("%s\n%d\n", buf, bytes_read);
-
+        while ((bytes_read = fread(buf, 1, 1024, file)) > 0) {
             if (send(socket, buf, bytes_read, 0) < 0) {
                 puts("Error: send failed");
                 break;
